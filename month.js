@@ -64,7 +64,7 @@ function formatTime(ms) {
 
 // ★★★ 毎月コンテンツを常時更新する関数
 function updateMonthlyEvents() {
-  const now = new Date(); // ← これが毎秒更新される
+  const now = new Date(); // ← 毎秒更新される
 
   events.forEach(event => {
     const element = document.getElementById(event.id);
@@ -82,11 +82,7 @@ function updateMonthlyEvents() {
 
       element.classList.add("active");
 
-      // 開始直後にリセット（開始から1時間以内）
-      if (now - event.start < 1000 * 60 * 60) {
-        checkbox.checked = false;
-        localStorage.removeItem(event.checkId);
-      }
+      // ★ チェックボックスを勝手に変更しない（削除済み）
 
     // 未開催
     } else if (now < event.start) {
@@ -101,15 +97,20 @@ function updateMonthlyEvents() {
       text = `${event.name}：終了済み`;
 
       element.classList.remove("active");
-      checkbox.checked = false;
-      localStorage.removeItem(event.checkId);
+
+      // ★ チェックボックスを勝手に変更しない（削除済み）
     }
 
     element.textContent = text;
 
+    // チェック変更時に保存
     checkbox.addEventListener("change", () => {
       localStorage.setItem(event.checkId, checkbox.checked);
     });
+
+    // 保存されたチェック状態を反映
+    const saved = localStorage.getItem(event.checkId);
+    if (saved === "true") checkbox.checked = true;
   });
 }
 
@@ -118,10 +119,3 @@ updateMonthlyEvents();
 
 // ★ 1秒ごとに常時更新
 setInterval(updateMonthlyEvents, 1000);
-
-// ★ 初回実行と常時更新（DOM構築後に実行）
-document.addEventListener("DOMContentLoaded", () => {
-  updateMonthlyEvents();
-  setInterval(updateMonthlyEvents, 1000);
-});
-
