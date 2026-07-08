@@ -361,3 +361,54 @@ input[type="checkbox"] {
     left: -100%;
   }
 }
+
+/* スマホ用レイアウト（画面幅600px以下） */
+@media (max-width: 600px) {
+
+  body {
+    font-size: 18px; /* 全体の文字を大きくする */
+  }
+
+  h1, h2, h3 {
+    font-size: 22px;
+  }
+
+  .month-card {
+    padding: 12px;
+    font-size: 18px;
+  }
+
+  .card-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 0;
+  }
+
+  /* チェックボックスを大きくする */
+  input[type="checkbox"] {
+    width: 26px;
+    height: 26px;
+  }
+
+  /* 毎月コンテンツのテキストを大きく */
+  #monthly span {
+    font-size: 18px;
+  }
+
+  /* サイドタブのボタンを大きく */
+  #side-tab-toggle {
+    font-size: 20px;
+    padding: 12px 16px;
+  }
+
+  #side-toc {
+    width: 80%;
+    font-size: 20px;
+  }
+
+  #side-close-btn {
+    font-size: 20px;
+    padding: 10px;
+  }
+}
