@@ -54,17 +54,10 @@ function formatTime(ms) {
 }
 
 // ===============================
-// 新規降臨キャラ（終了時間は1つだけ表示）
+// 新規降臨キャラ（DOM生成）
 // ===============================
 function generateNewCharacters() {
-    const timeBox = document.getElementById("new_characters_time");
     const listBox = document.getElementById("new_characters");
-
-    const now = new Date();
-    const diff = newCharactersEnd - now;
-    const timeLeft = formatTime(diff);
-
-    timeBox.textContent = `終了まであと ${timeLeft}`;
 
     newCharacters.forEach((item, index) => {
         const div = document.createElement("div");
@@ -78,6 +71,7 @@ function generateNewCharacters() {
         if (saved === "true") checkbox.checked = true;
 
         const span = document.createElement("span");
+        span.id = `new_characters_time_${index}`;
         span.textContent = item;
 
         checkbox.addEventListener("change", () => {
@@ -91,7 +85,19 @@ function generateNewCharacters() {
 }
 
 // ===============================
-// 期間限定コンテンツ（個別に終了時間を表示）
+// 新規降臨キャラ（時間更新）
+// ===============================
+function updateNewCharacters() {
+    const now = new Date();
+    const diff = newCharactersEnd - now;
+    const timeLeft = formatTime(diff);
+
+    document.getElementById("new_characters_time").textContent =
+        `終了まであと ${timeLeft}`;
+}
+
+// ===============================
+// 期間限定コンテンツ（DOM生成）
 // ===============================
 function generateLimitedContents() {
     const container = document.getElementById("limited_contents");
@@ -107,12 +113,9 @@ function generateLimitedContents() {
         const saved = localStorage.getItem(`limited_contents_check_${index}`);
         if (saved === "true") checkbox.checked = true;
 
-        const now = new Date();
-        const diff = content.end - now;
-        const timeLeft = formatTime(diff);
-
         const span = document.createElement("span");
-        span.textContent = `${content.name}：終了まであと ${timeLeft}`;
+        span.id = `limited_contents_time_${index}`;
+        span.textContent = `${content.name}`;
 
         checkbox.addEventListener("change", () => {
             localStorage.setItem(`limited_contents_check_${index}`, checkbox.checked);
@@ -125,19 +128,24 @@ function generateLimitedContents() {
 }
 
 // ===============================
-// 毎日すること（0時更新 / 4時更新）
+// 期間限定コンテンツ（時間更新）
 // ===============================
-function generateDailyTasks() {
+function updateLimitedContents() {
     const now = new Date();
 
-    // 0時更新 → 次の日の 0:00
-    const next0 = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 0, 0, 0);
-    const diff0 = next0 - now;
-    const timeLeft0 = formatTime(diff0);
+    limitedContents.forEach((content, index) => {
+        const diff = content.end - now;
+        const timeLeft = formatTime(diff);
 
-    document.getElementById("daily_tasks_0_time").textContent =
-        `更新まであと ${timeLeft0}`;
+        const span = document.getElementById(`limited_contents_time_${index}`);
+        span.textContent = `${content.name}：終了まであと ${timeLeft}`;
+    });
+}
 
+// ===============================
+// 毎日すること（DOM生成）
+// ===============================
+function generateDailyTasks() {
     dailyTasks0.forEach((item, index) => {
         const container = document.getElementById("daily_tasks_0");
         const div = document.createElement("div");
@@ -161,14 +169,6 @@ function generateDailyTasks() {
         div.appendChild(span);
         container.appendChild(div);
     });
-
-    // 4時更新 → 次の日の 4:00
-    const next4 = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 4, 0, 0);
-    const diff4 = next4 - now;
-    const timeLeft4 = formatTime(diff4);
-
-    document.getElementById("daily_tasks_4_time").textContent =
-        `更新まであと ${timeLeft4}`;
 
     dailyTasks4.forEach((item, index) => {
         const container = document.getElementById("daily_tasks_4");
@@ -196,8 +196,38 @@ function generateDailyTasks() {
 }
 
 // ===============================
-// 実行
+// 毎日すること（時間更新）
+// ===============================
+function updateDailyTasks() {
+    const now = new Date();
+
+    const next0 = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 0, 0, 0);
+    const diff0 = next0 - now;
+    const timeLeft0 = formatTime(diff0);
+
+    document.getElementById("daily_tasks_0_time").textContent =
+        `更新まであと ${timeLeft0}`;
+
+    const next4 = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 4, 0, 0);
+    const diff4 = next4 - now;
+    const timeLeft4 = formatTime(diff4);
+
+    document.getElementById("daily_tasks_4_time").textContent =
+        `更新まであと ${timeLeft4}`;
+}
+
+// ===============================
+// 初期生成
 // ===============================
 generateNewCharacters();
 generateLimitedContents();
 generateDailyTasks();
+
+// ===============================
+// 常時更新（1秒ごと）
+// ===============================
+setInterval(() => {
+    updateNewCharacters();
+    updateLimitedContents();
+    updateDailyTasks();
+}, 1000);
