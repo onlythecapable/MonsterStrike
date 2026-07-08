@@ -64,7 +64,7 @@ function formatTime(ms) {
 
 // ★★★ 毎月コンテンツを常時更新する関数
 function updateMonthlyEvents() {
-  const now = new Date();
+  const now = new Date(); // ← これが毎秒更新される
 
   events.forEach(event => {
     const element = document.getElementById(event.id);
@@ -107,7 +107,6 @@ function updateMonthlyEvents() {
 
     element.textContent = text;
 
-    // チェック変更時に保存
     checkbox.addEventListener("change", () => {
       localStorage.setItem(event.checkId, checkbox.checked);
     });
