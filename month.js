@@ -118,3 +118,10 @@ updateMonthlyEvents();
 
 // ★ 1秒ごとに常時更新
 setInterval(updateMonthlyEvents, 1000);
+
+// ★ 初回実行と常時更新（DOM構築後に実行）
+document.addEventListener("DOMContentLoaded", () => {
+  updateMonthlyEvents();
+  setInterval(updateMonthlyEvents, 1000);
+});
+
