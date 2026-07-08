@@ -412,3 +412,9 @@ input[type="checkbox"] {
     padding: 10px;
   }
 }
+
+@media (max-width: 600px) {
+  #limited_contents {
+    font-size: 18px !important;
+  }
+}
