@@ -1,7 +1,6 @@
-// 今日の日付
-const today = new Date();
-const year = today.getFullYear();
-const month = today.getMonth();
+// 今日の日付（常時更新のため関数内で再取得する）
+const year = new Date().getFullYear();
+const month = new Date().getMonth();
 
 // 今月の最終日（天魔用）
 const lastDayOfMonth = new Date(year, month + 1, 0, 23, 59, 59);
@@ -63,53 +62,60 @@ function formatTime(ms) {
   return `${days}日${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
 }
 
-// 全イベント処理
-events.forEach(event => {
-  const element = document.getElementById(event.id);
-  const checkbox = document.getElementById(event.checkId);
+// ★★★ 毎月コンテンツを常時更新する関数
+function updateMonthlyEvents() {
+  const now = new Date();
 
-  // 保存されたチェック状態を読み込み
-  const saved = localStorage.getItem(event.checkId);
-  if (saved === "true") checkbox.checked = true;
+  events.forEach(event => {
+    const element = document.getElementById(event.id);
+    const checkbox = document.getElementById(event.checkId);
 
-  let text = "";
+    if (!element || !checkbox) return;
 
-  // 開催中
-  if (event.start <= today && today <= event.end) {
-    const diffTime = event.end - today;
-    const timeLeft = formatTime(diffTime);
-    text = `${event.name}：開催中／終了まであと ${timeLeft}`;
+    let text = "";
 
-    // 開催中強調
-    element.classList.add("active");
+    // 開催中
+    if (event.start <= now && now <= event.end) {
+      const diffTime = event.end - now;
+      const timeLeft = formatTime(diffTime);
+      text = `${event.name}：開催中／終了まであと ${timeLeft}`;
 
-    // 開催直後にリセット（開始から1時間以内）
-    if (today - event.start < 1000 * 60 * 60) {
+      element.classList.add("active");
+
+      // 開始直後にリセット（開始から1時間以内）
+      if (now - event.start < 1000 * 60 * 60) {
+        checkbox.checked = false;
+        localStorage.removeItem(event.checkId);
+      }
+
+    // 未開催
+    } else if (now < event.start) {
+      const diffTime = event.start - now;
+      const timeLeft = formatTime(diffTime);
+      text = `${event.name}：未開催／開始まであと ${timeLeft}`;
+
+      element.classList.remove("active");
+
+    // 終了済み
+    } else {
+      text = `${event.name}：終了済み`;
+
+      element.classList.remove("active");
       checkbox.checked = false;
       localStorage.removeItem(event.checkId);
     }
 
-  // 未開催
-  } else if (today < event.start) {
-    const diffTime = event.start - today;
-    const timeLeft = formatTime(diffTime);
-    text = `${event.name}：未開催／開始まであと ${timeLeft}`;
+    element.textContent = text;
 
-    element.classList.remove("active");
-
-  // 終了済み
-  } else {
-    text = `${event.name}：終了済み`;
-
-    element.classList.remove("active");
-    checkbox.checked = false;
-    localStorage.removeItem(event.checkId);
-  }
-
-  element.textContent = text;
-
-  // チェック変更時に保存
-  checkbox.addEventListener("change", () => {
-    localStorage.setItem(event.checkId, checkbox.checked);
+    // チェック変更時に保存
+    checkbox.addEventListener("change", () => {
+      localStorage.setItem(event.checkId, checkbox.checked);
+    });
   });
-});
+}
+
+// ★ 初回実行
+updateMonthlyEvents();
+
+// ★ 1秒ごとに常時更新
+setInterval(updateMonthlyEvents, 1000);
