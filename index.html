@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <title>モンスト情報まとめサイト</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- 左サイドタブ -->
+    <div id="side-tab">
+        <button id="side-tab-toggle">≡ 目次</button>
+
+        <nav id="side-toc" class="side-toc">
+            <button id="side-close-btn" class="side-close-btn">✕ 閉じる</button>
+
+            <ul>
+                <li><a href="#monthly">毎月コンテンツ</a></li>
+                <li><a href="#event">イベント・コラボ情報</a></li>
+                <li><a href="#daily">毎日すること</a></li>
+            </ul>
+        </nav>
+    </div>
+
+    <header>
+        <h1>モンストまとめ</h1>
+    </header>
+
+    <main>
+        <section id="monthly">
+            <h2>毎月コンテンツ</h2>
+
+            <div class="month-card">
+                <div class="card-row">
+                    <input type="checkbox" id="seibo_check">
+                    <span id="seibo_id"></span>
+                </div>
+
+                <div class="card-row">
+                    <input type="checkbox" id="tenma_check">
+                    <span id="tenma_id"></span>
+                </div>
+
+                <div class="card-row">
+                    <input type="checkbox" id="hasya_check">
+                    <span id="hasya_id"></span>
+                </div>
+
+                <div class="card-row">
+                    <input type="checkbox" id="sakyu_check">
+                    <span id="sakyu_id"></span>
+                </div>
+
+                <div class="card-row">
+                    <input type="checkbox" id="kinki_check">
+                    <span id="kinki_id"></span>
+                </div>
+
+                <div class="card-row">
+                    <input type="checkbox" id="zekkyu_check">
+                    <span id="zekkyu_id"></span>
+                </div>
+            </div>
+        </section>
+
+        <section id="event">
+            <h2>イベント・コラボ情報</h2>
+
+            <h3>新規降臨キャラ</h3>
+            <div id="new_characters_time"></div>
+            <div id="new_characters"></div>
+
+            <h3>期間限定コンテンツ</h3>
+            <div id="limited_contents"></div>
+        </section>
+
+        <section id="daily">
+            <h2>デイリー</h2>
+
+            <h3>0時更新</h3>
+            <div id="daily_tasks_0_time" class="daily-time"></div>
+            <div id="daily_tasks_0" class="daily-card"></div>
+
+            <h3>4時更新</h3>
+            <div id="daily_tasks_4_time" class="daily-time"></div>
+            <div id="daily_tasks_4" class="daily-card"></div>
+        </section>
+
+        <section>
+            <h2>攻略情報</h2>
+            <p>ここに攻略記事を追加できます。</p>
+        </section>
+    </main>
+
+    <script src="month.js"></script>
+    <script src="event.js"></script>
+    <script src="tub.js"></script>
+
+</body>
+
+</html>

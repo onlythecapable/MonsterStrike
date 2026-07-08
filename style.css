@@ -1,0 +1,363 @@
+/* ===============================
+   全体デザイン
+=============================== */
+body {
+  font-family: "Yu Gothic", "Meiryo", sans-serif;
+  background: linear-gradient(135deg, #f5f7fa, #e8ecf3);
+  color: #333;
+  margin: 0;
+  padding: 20px;
+}
+
+main {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+/* タイトル */
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #444;
+}
+
+/* 見出し */
+h2,
+h3,
+h4 {
+  margin-bottom: 12px;
+  font-weight: bold;
+}
+
+h2 {
+  border-left: 6px solid #4a90e2;
+  padding-left: 10px;
+}
+
+h3 {
+  border-left: 4px solid #7ab8ff;
+  padding-left: 8px;
+}
+
+h4 {
+  border-left: 3px solid #a0c8ff;
+  padding-left: 6px;
+}
+
+/* ===============================
+   カード共通デザイン
+=============================== */
+.card,
+.month-card,
+#new_characters,
+#limited_contents,
+#daily_tasks_0,
+#daily_tasks_4 {
+  background: #ffffff;
+  padding: 16px 20px;
+  margin-bottom: 12px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* カード内の行（チェック＋テキスト） */
+.card-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 0;
+}
+
+/* ===============================
+   青い時間カード
+=============================== */
+.daily-time,
+#new_characters_time {
+  background: #ffffff;
+  padding: 16px 20px;
+  margin-bottom: 12px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+
+  display: flex;
+  justify-content: center;
+
+  color: #2a7ae2;
+  font-weight: bold;
+  font-size: 15px;
+}
+
+/* ===============================
+   チェックボックス
+=============================== */
+input[type="checkbox"] {
+  transform: scale(1.3);
+}
+
+/* ===============================
+   開催中強調
+=============================== */
+.active {
+  font-weight: bold;
+  color: #d9534f;
+}
+
+/* 終了済みの薄表示 */
+.finished {
+  opacity: 0.5;
+}
+
+/* ===============================
+   ★ 目次タブ（ズレ修正）
+=============================== */
+.toc ul {
+  display: flex;
+  justify-content: center;
+  /* 横方向中央寄せ */
+  align-items: center;
+  /* ★縦方向中央揃え（ズレ解消） */
+  gap: 10px;
+  padding-left: 0;
+  margin: 10px 0;
+}
+
+.toc li {
+  list-style: none;
+}
+
+.toc a {
+  font-size: 16px;
+  padding: 10px 14px;
+  /* 高さ統一 */
+  line-height: 1.4;
+  /* ★文字の上下ズレ防止 */
+  display: inline-block;
+  background: #f0f4ff;
+  border-radius: 6px;
+  border: 1px solid #d0d7ff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* ===============================
+   スマホ最適化
+=============================== */
+@media (max-width: 600px) {
+
+  body {
+    padding: 10px;
+  }
+
+  main {
+    max-width: 100%;
+  }
+
+  h1 {
+    font-size: 22px;
+  }
+
+  h2 {
+    font-size: 18px;
+  }
+
+  h3 {
+    font-size: 16px;
+  }
+
+  .card,
+  .month-card,
+  #new_characters,
+  #limited_contents,
+  #daily_tasks_0,
+  #daily_tasks_4,
+  .daily-card,
+  .daily-time {
+    padding: 14px 16px;
+    margin-bottom: 16px;
+  }
+
+  .card-row {
+    gap: 12px;
+    padding: 10px 0;
+  }
+
+  input[type="checkbox"] {
+    transform: scale(1.6);
+  }
+
+  span {
+    font-size: 15px;
+    line-height: 1.5;
+  }
+
+  /* ★スマホでも横並びのまま中央寄せ */
+  .toc ul {
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .toc a {
+    font-size: 15px;
+    padding: 10px 12px;
+  }
+}
+
+/* ===============================
+   左サイドタブ（折り畳み式）
+=============================== */
+#side-tab {
+  position: fixed;
+  top: 80px;
+  left: 0;
+  z-index: 999;
+}
+
+#side-tab-toggle {
+  background: #4a90e2;
+  color: #fff;
+  border: none;
+  padding: 12px 16px;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 0 8px 8px 0;
+  cursor: pointer;
+  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.side-toc {
+  position: fixed;
+  top: 80px;
+  left: -180px;
+  /* ★初期状態は隠す */
+  width: 180px;
+  background: #f0f4ff;
+  border-right: 1px solid #d0d7ff;
+  padding: 20px 10px;
+  border-radius: 0 8px 8px 0;
+  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);
+  transition: left 0.3s ease;
+}
+
+.side-toc ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.side-toc li {
+  margin-bottom: 12px;
+}
+
+.side-toc a {
+  display: block;
+  padding: 10px;
+  background: #ffffff;
+  border-radius: 6px;
+  border: 1px solid #d0d7ff;
+  text-align: center;
+  font-weight: bold;
+  color: #333;
+}
+
+/* ===============================
+   スマホ最適化
+=============================== */
+@media (max-width: 600px) {
+  #side-tab-toggle {
+    padding: 10px 14px;
+    font-size: 15px;
+  }
+
+  /* PC・スマホ共通：閉じた状態の位置 */
+  .side-toc {
+    left: -200px;
+    /* ← 統一してズレ防止 */
+    width: 200px;
+  }
+
+
+  .side-toc a {
+    font-size: 14px;
+    padding: 8px;
+  }
+}
+
+/* 左タブの閉じるボタン */
+.side-close-btn {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  background: #ff6b6b;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* ===============================
+   左サイドタブ（位置調整版）
+=============================== */
+
+/* 左タブのトグルボタン */
+#side-tab {
+  position: fixed;
+  top: 20px;   /* ★ここを上げる（モンストまとめと同じ高さ） */
+  left: 0;
+  z-index: 999;
+}
+
+#side-tab-toggle {
+  background: #4a90e2;
+  color: #fff;
+  border: none;
+  padding: 12px 16px;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 0 8px 8px 0;
+  cursor: pointer;
+  box-shadow: 2px 2px 6px rgba(0,0,0,0.2);
+}
+
+/* 左タブ本体 */
+.side-toc {
+  position: fixed;
+  top: 20px;   /* ★ここも同じ高さにする */
+  left: -100%; /* 画面幅に応じて完全に隠れる */
+  width: 200px;
+  max-width: 80%;
+  background: #f0f4ff;
+  border-right: 1px solid #d0d7ff;
+  padding: 20px 10px;
+  border-radius: 0 8px 8px 0;
+  box-shadow: 2px 2px 6px rgba(0,0,0,0.2);
+  transition: left 0.3s ease;
+}
+
+/* 閉じるボタン */
+.side-close-btn {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  background: #ff6b6b;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* スマホ最適化 */
+@media (max-width: 600px) {
+  #side-tab {
+    top: 20px; /* スマホでも同じ高さに揃える */
+  }
+
+  .side-toc {
+    top: 20px; /* スマホでも同じ高さに揃える */
+    width: 160px;
+    max-width: 80%;
+    left: -100%;
+  }
+}
